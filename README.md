@@ -1,4 +1,4 @@
-# Sonarqube Scanner container
+# Sonarqube Scanner CLI container
 Docker container image for use in build servers such as Jenkins to execute code quality scans using Sonarqube scanner.
 
 This container provides the following standard commands:
@@ -31,7 +31,7 @@ pipeline {
 		stage('Codequality') {
 			agent { 
 				docker { 
-					image 'curlybracket/sonarqube-scanner:latest' 
+					image 'curlybracket/sonar-scanner:latest' 
 					args '-u root'
 				}
 			}
