@@ -9,9 +9,9 @@ This container provides the following standard commands:
 Setup your CI pipeline with the following command to execute in this container:
 ```bash
 sonar-scanner -D sonar.host.url=<URL> \ 
-              -D sonar.projectKey=<SONAR_PROJECT_KEY>
-              -D sonar.pullrequest.branch=<BRANCH_NAME>
-              -D sonar.pullrequest.key=<PR_ID>
+              -D sonar.projectKey=<SONAR_PROJECT_KEY> \
+              -D sonar.pullrequest.branch=<BRANCH_NAME> \
+              -D sonar.pullrequest.key=<PR_ID> \
               -D sonar.pullrequest.base=<TARGET_BRANCH_FOR_PR>\
               -D sonar.projectVersion=<SCM_HASH/ID>
 ```
@@ -26,22 +26,22 @@ Below you will find a sample configuration that can be used in a pipeline script
 
 ```groovy
 pipeline {
-    agent none
+    agent { 
+        docker { 
+            image 'curlybracket/sonar-scanner:latest' 
+            args '-u root'
+        }
+    }
     stages {
 		stage('Codequality') {
-			agent { 
-				docker { 
-					image 'curlybracket/sonar-scanner:latest' 
-					args '-u root'
-				}
-			}
+			
             steps {
-                sh 'sonar-scanner -D sonar.host.url=<URL> \ 
-                                  -D sonar.projectKey=<SONAR_PROJECT_KEY>
-                                  -D sonar.pullrequest.branch=<BRANCH_NAME>
-                                  -D sonar.pullrequest.key=<PR_ID>
-                                  -D sonar.pullrequest.base=<TARGET_BRANCH_FOR_PR>\
-                                  -D sonar.projectVersion=<SCM_HASH/ID>'
+                sh '''sonar-scanner -D sonar.host.url=<URL> \\
+                                  -D sonar.projectKey=<SONAR_PROJECT_KEY> \\
+                                  -D sonar.pullrequest.branch=<BRANCH_NAME> \\
+                                  -D sonar.pullrequest.key=<PR_ID> \\
+                                  -D sonar.pullrequest.base=<TARGET_BRANCH_FOR_PR> \\
+                                  -D sonar.projectVersion=<SCM_HASH/ID>'''
 			}
         }
     }
