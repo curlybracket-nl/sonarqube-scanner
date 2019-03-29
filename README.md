@@ -28,21 +28,22 @@ Below you will find a sample configuration that can be used in a pipeline script
 pipeline {
     agent { 
         docker { 
-            image 'curlybracket/sonar-scanner:latest' 
-            args '-u root'
+            image 'curlybracket/sonar-scanner:latest'
         }
     }
     stages {
-		stage('Codequality') {
-			
-            steps {
-                sh '''sonar-scanner -D sonar.host.url=<URL> \\
-                                  -D sonar.projectKey=<SONAR_PROJECT_KEY> \\
-                                  -D sonar.pullrequest.branch=<BRANCH_NAME> \\
-                                  -D sonar.pullrequest.key=<PR_ID> \\
-                                  -D sonar.pullrequest.base=<TARGET_BRANCH_FOR_PR> \\
-                                  -D sonar.projectVersion=<SCM_HASH/ID>'''
-			}
+        stage('Codequality') {
+	
+            // Use a configuration provider for Jenkins to store sonar details such as server URL and ProjectKey
+	    // see sonar documentation for details
+	    configFileProvider([configFile(fileId: 'sonar-properties', targetLocation: 'sonar-project.properties')]) {                
+		script {
+		    // Setup for use with bitbucket/stash plugin -- assume community edition from Sonar without branching support
+                    def sonarProps = readProperties file:'sonar-project.properties'
+                    sh "sonar-scanner -D sonar.projectKey=${sonarProps['sonar.projectKey']}:${BRANCH_NAME}"
+                }		
+            }	
+	    
         }
     }
 }
