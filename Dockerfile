@@ -1,4 +1,4 @@
-FROM alpine:3.7 
+FROM alpine:3.9
 MAINTAINER Peter van Gulik <peter@curlybracket.nl>
 
 # Add packages
@@ -9,6 +9,7 @@ RUN apk --no-cache add \
     openjdk8 \
     nodejs \
     curl \ 
+	nss \
     wget
 
 # Download Sonarscanner
