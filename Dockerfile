@@ -10,7 +10,7 @@ RUN apk --no-cache add \
     nodejs \
     curl \ 
     nss \
-    node \
+    nodejs \
     npm \
     wget
 
