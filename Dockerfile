@@ -10,6 +10,8 @@ RUN apk --no-cache add \
     nodejs \
     curl \ 
     nss \
+    node \
+    npm \
     wget
 
 # Download Sonarscanner
