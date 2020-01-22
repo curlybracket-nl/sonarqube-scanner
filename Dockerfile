@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.11
 MAINTAINER Peter van Gulik <peter@curlybracket.nl>
 
 # Add packages
@@ -6,7 +6,7 @@ RUN apk --no-cache add \
     bash \
     unzip \
     git \
-    openjdk8 \
+    openjdk11 \
     nodejs \
     curl \ 
     nss \
@@ -15,9 +15,9 @@ RUN apk --no-cache add \
     wget
 
 # Download Sonarscanner
-RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492.zip -o sonar.zip \
+RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873-linux.zip -o sonar.zip \
     && unzip sonar.zip \
-    && mv sonar-scanner-3.3.0.1492 sonar-scanner \
+    && mv sonar-scanner-4.2.0.1873-linux sonar-scanner \
     && ln -sf /sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner \
     && ln -sf /sonar-scanner/bin/sonar-scanner-debug /usr/bin/sonar-scanner-debug \
     && rm -rf sonar.zip
