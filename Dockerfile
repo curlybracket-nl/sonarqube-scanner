@@ -18,6 +18,8 @@ RUN apk --no-cache add \
 RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873-linux.zip -o sonar.zip \
     && unzip sonar.zip \
     && mv sonar-scanner-4.2.0.1873-linux sonar-scanner \
+	&& rm -rf /sonar-scanner/jre \
+	&& ln -sf /usr/lib/jvm/default-jvm /sonar-scanner/jre \
     && ln -sf /sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner \
     && ln -sf /sonar-scanner/bin/sonar-scanner-debug /usr/bin/sonar-scanner-debug \
     && rm -rf sonar.zip
