@@ -15,18 +15,24 @@ RUN apk --no-cache add \
     wget
 
 # Download Sonarscanner
-RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873-linux.zip -o sonar.zip \
+RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.3.0.2102-linux.zip -o sonar.zip \
     && unzip sonar.zip \
-    && mv sonar-scanner-4.2.0.1873-linux sonar-scanner \
+    && mv sonar-scanner-4.3.0.2102-linux sonar-scanner \
 	&& rm -rf /sonar-scanner/jre \
 	&& ln -sf /usr/lib/jvm/default-jvm /sonar-scanner/jre \
     && ln -sf /sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner \
     && ln -sf /sonar-scanner/bin/sonar-scanner-debug /usr/bin/sonar-scanner-debug \
     && rm -rf sonar.zip
 
+# Set java home
+ENV JAVA_HOME=/usr/lib/jvm/default-jvm
+
 # Setup entry point to use umask 0000 and run bash
 COPY docker-entrypoint.sh /entrypoint.sh
-RUN chmod ugo+x /entrypoint.sh
+RUN chmod ugo+x /entrypoint.sh \
+    && chmod a+rw /usr/lib/jvm/default-jvm/jre/lib/security/cacerts \
+    && chmod a+rw / \
+    && chmod -R /etc /usr
 ENTRYPOINT ["/entrypoint.sh"]
 
 # EOF
