@@ -32,7 +32,7 @@ COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod ugo+x /entrypoint.sh \
     && chmod a+rw /usr/lib/jvm/default-jvm/jre/lib/security/cacerts \
     && chmod a+rw / \
-    && chmod -R /etc /usr
+    && chmod a+rw -R /etc /usr
 ENTRYPOINT ["/entrypoint.sh"]
 
 # EOF
