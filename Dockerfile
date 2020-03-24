@@ -26,13 +26,11 @@ RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/son
 
 # Set java home
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
+RUN chmod a+rw /usr/lib/jvm/default-jvm/jre/lib/security/cacerts
 
 # Setup entry point to use umask 0000 and run bash
 COPY docker-entrypoint.sh /entrypoint.sh
-RUN chmod ugo+x /entrypoint.sh \
-    && chmod a+rw /usr/lib/jvm/default-jvm/jre/lib/security/cacerts \
-    && chmod a+rw / \
-    && chmod a+rw -R /etc /usr
+RUN chmod ugo+x /entrypoint.sh && chmod a+rw /
 ENTRYPOINT ["/entrypoint.sh"]
 
 # EOF
