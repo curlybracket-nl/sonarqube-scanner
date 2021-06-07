@@ -1,6 +1,10 @@
 FROM alpine:3.13.5
 MAINTAINER Peter van Gulik <peter@curlybracket.nl>
 
+# args
+ARG SONASCANNER_VERSION=4.6.2.2472
+ARG SONASCANNER_ZIP_URL=https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONASCANNER_VERSION}-linux.zip
+
 # Add packages
 RUN apk --no-cache add \ 
     bash \
@@ -15,9 +19,9 @@ RUN apk --no-cache add \
     wget
 
 # Download Sonarscanner
-RUN curl -SL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.3.0.2102-linux.zip -o sonar.zip \
+RUN curl -SL ${SONASCANNER_ZIP_URL} -o sonar.zip \
     && unzip sonar.zip \
-    && mv sonar-scanner-4.3.0.2102-linux sonar-scanner \
+    && mv sonar-scanner-${SONASCANNER_VERSION}-linux sonar-scanner \
 	&& rm -rf /sonar-scanner/jre \
 	&& ln -sf /usr/lib/jvm/default-jvm /sonar-scanner/jre \
     && ln -sf /sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner \
